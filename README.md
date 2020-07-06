@@ -1,3 +1,5 @@
+This fork adds support for clean shutdown by pressing the joystick
+
 # gadget_cdrom
 ## Requirements
 * Requires Raspberry Pi Zero (W) 
