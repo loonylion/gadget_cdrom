@@ -189,7 +189,14 @@ class State:
          self._iso_name = None
          script = os.path.join(APP_DIR, "remove_iso.sh")
          subprocess.check_call((script,))
-
+        
+    def shutdown(self):
+        if self.get_mode() == MODE_HDD:
+            subprocess.check_output(("sync",))
+        else:
+            self.remove_iso()
+        script = os.path.join(APP_DIR, "shutdown.sh")
+        subprocess.check_call((script,))
 
 class Display:
     def __init__(self):
@@ -288,6 +295,7 @@ class WVSButtons:
         KEY3 : "mode",
         J_UP : "up",
         J_DOWN : "down",
+        J_PRESS : "press",
     }
 
 
@@ -305,6 +313,7 @@ class Main:
             "mount" : self._button_mount,
             "umount" : self._button_umount,
             "mode" : self._button_mode,
+            "press" : self._button_shutdown,
         }
 
     def main(self):
@@ -336,6 +345,9 @@ class Main:
         if self._state.get_mode() != MODE_CD:
             return
         self._state.remove_iso()
+        
+    def _button_shutdown(self):
+        self._state.shutdown()
 
 
 if __name__ == "__main__":
